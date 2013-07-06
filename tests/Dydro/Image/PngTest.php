@@ -1,22 +1,22 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Test
+ * @link http://github.com/dydro/php-imagemeta
+ * @package Dydro\ImageMeta\Test
  */
 
-namespace Dydro\ImageLib\Test;
+namespace Dydro\ImageMeta\Test;
 
-use Dydro\ImageLib\Png;
+use Dydro\ImageMeta\Png;
 
 /**
  * Tests the PNG class
  *
- * @package Dydro\ImageLib\Test
+ * @package Dydro\ImageMeta\Test
  */
 class PngTest extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +44,7 @@ class PngTest extends \PHPUnit_Framework_TestCase
         try {
             new Png("{$resDir}block-rgb.jpg");
         } catch (\Exception $e) {
-            $this->assertInstanceOf('\Dydro\ImageLib\Exception\DomainException', $e);
+            $this->assertInstanceOf('\Dydro\ImageMeta\Exception\DomainException', $e);
         }
     }
 }

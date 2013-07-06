@@ -1,6 +1,6 @@
 {
-    "name": "dydro/imglib",
-    "description": "A library for gathering image data",
+    "name": "dydro/imagemeta",
+    "description": "A library for gathering image metadata",
     "keywords": ["image","png","jpeg","gif","tiff","svg"],
     "license": "BSD-3-Clause",
     "authors": [{
@@ -13,7 +13,7 @@
     }],
     "autoload": {
         "psr-0": {
-            "Dydro\\ImageLib\\": "src/"
+            "Dydro\\ImageMeta\\": "src/"
         }
     },
     "require": {

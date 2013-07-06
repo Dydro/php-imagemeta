@@ -1,4 +1,4 @@
-# PHP Image Lib
-A library for gathering image data
+# Image Meta
+A library for gathering image metadata
 
 **WIP**

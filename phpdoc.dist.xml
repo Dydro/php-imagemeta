@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>PHP-ImageLib - A library for gathering image data</title>
+    <title>PHP-ImageMeta - A library for gathering image data</title>
     <parser>
         <target>build/phpdoc</target>
     </parser>

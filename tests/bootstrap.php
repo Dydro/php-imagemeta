@@ -1,12 +1,12 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Tests
+ * @link http://github.com/dydro/php-imagemeta
+ * @package Dydro\ImageMeta\Tests
  */
 
 // Include the Composer autoloader

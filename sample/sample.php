@@ -1,21 +1,22 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Sample
+ * @link http://github.com/dydro/php-imagemeta
+ * @package Dydro\ImageMeta\Sample
  */
 
-use Dydro\ImageLib\Image;
-use Dydro\ImageLib\Jpeg;
-use Dydro\ImageLib\Png;
+use Dydro\ImageMeta\Image;
+use Dydro\ImageMeta\Jpeg;
+use Dydro\ImageMeta\Png;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 function printDetails(Image $image) {
+    $image->process();
     switch ($image->getColorspace()) {
         case 0:
             $colorspaceConst = '_PALETTE';

@@ -1,20 +1,20 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Exception
+ * @link http://github.com/dydro/php-imagemeta
+ * @package Dydro\ImageMeta\Exception
  */
 
-namespace Dydro\ImageLib\Exception;
+namespace Dydro\ImageMeta\Exception;
 
 /**
  * Wraps a domain exception
  *
- * @package Dydro\ImageLib\Exception
+ * @package Dydro\ImageMeta\Exception
  */
 class DomainException extends \Exception
 {

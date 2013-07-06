@@ -1,20 +1,20 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @pac,kage Dydro\ImageLib\Exception
+ * @link http://github.com/dydro/php-imagemeta
+ * @pac,kage Dydro\ImageMeta\Exception
  */
 
-namespace Dydro\ImageLib\Exception;
+namespace Dydro\ImageMeta\Exception;
 
 /**
  * Wraps a corrupted image exception
  *
- * @package Dydro\ImageLib\Exception
+ * @package Dydro\ImageMeta\Exception
  */
 class CorruptedImageException extends \Exception
 {

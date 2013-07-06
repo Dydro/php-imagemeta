@@ -1,23 +1,23 @@
 <?php
 /**
- * PHP-ImageLib - A library for gathering image data
+ * PHP-ImageMeta - A library for gathering image data
  *
  * @author Troy McCabe <troy@dydro.com>
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
- * @link http://github.com/dydro/php-imglib
- * @package Dydro\Image
+ * @link http://github.com/dydro/php-imagemeta
+ * @package Dydro\ImageMeta
  */
 
-namespace Dydro\ImageLib;
+namespace Dydro\ImageMeta;
 
-use Dydro\ImageLib\Exception\DomainException;
-use Dydro\ImageLib\Exception\UnsupportedException;
+use Dydro\ImageMeta\Exception\DomainException;
+use Dydro\ImageMeta\Exception\UnsupportedException;
 
 /**
  * Grabs data for JPEG images
  *
- * @package Dydro\Image
+ * @package Dydro\ImageMeta
  */
 class Jpeg extends Image
 {
