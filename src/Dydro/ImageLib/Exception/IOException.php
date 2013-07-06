@@ -6,16 +6,16 @@
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
  * @link http://github.com/dydro/php-imglib
- * @package Dydro\Image\Exception
+ * @package Dydro\ImageLib\Exception
  */
 
-namespace Dydro\Image\Exception;
+namespace Dydro\ImageLib\Exception;
 
 /**
- * Wraps an unsupported operation
+ * Wraps an IO exception
  *
- * @package Dydro\Image\Exception
+ * @package Dydro\ImageLib\Exception
  */
-class UnsupportedException extends \Exception
+class IOException extends \Exception
 {
 }

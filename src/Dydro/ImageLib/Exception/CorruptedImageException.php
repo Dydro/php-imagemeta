@@ -6,8 +6,16 @@
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
  * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Tests
+ * @pac,kage Dydro\ImageLib\Exception
  */
 
-// Include the Composer autoloader
-$loader = require __DIR__ . '/../vendor/autoload.php';
+namespace Dydro\ImageLib\Exception;
+
+/**
+ * Wraps a corrupted image exception
+ *
+ * @package Dydro\ImageLib\Exception
+ */
+class CorruptedImageException extends \Exception
+{
+}

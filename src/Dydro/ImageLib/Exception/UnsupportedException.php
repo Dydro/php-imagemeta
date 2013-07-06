@@ -6,8 +6,16 @@
  * @copyright 2013 Dydro LLC. All rights reserved.
  * @license BSD 3-Clause License
  * @link http://github.com/dydro/php-imglib
- * @package Dydro\ImageLib\Tests
+ * @package Dydro\ImageLib\Exception
  */
 
-// Include the Composer autoloader
-$loader = require __DIR__ . '/../vendor/autoload.php';
+namespace Dydro\ImageLib\Exception;
+
+/**
+ * Wraps an unsupported operation
+ *
+ * @package Dydro\ImageLib\Exception
+ */
+class UnsupportedException extends \Exception
+{
+}
