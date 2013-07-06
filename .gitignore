@@ -1,0 +1,19 @@
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# PHPStorm
+.idea
+
+# PHPUnit
+phpunit.xml
+build/*
+
+# Composer
+composer.lock
+composer.phar
+
+# General
+vendor

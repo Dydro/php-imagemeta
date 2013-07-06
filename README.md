@@ -1,4 +1,2 @@
-php-imglib
-==========
-
-An image parsing library to extract metadata from images
+# PHP Image Lib
+A library for gathering image data

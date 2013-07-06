@@ -1,0 +1,25 @@
+{
+    "name": "dydro/php-imglib",
+    "description": "A library for gathering image data",
+    "keywords": ["image","png","jpg","jpeg","gif","tiff"],
+    "license": "BSD-3-Clause",
+    "authors": [{
+        "name": "Dydro LLC.",
+        "email": "team@dydro.com",
+        "homepage": "http://dydro.com"
+    }, {
+        "name": "Troy McCabe",
+        "email": "troy@dydro.com"
+    }],
+    "autoload": {
+        "psr-0": {
+            "Dydro\\Image\\": "src/"
+        }
+    },
+    "require": {
+        "php": "5.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}
