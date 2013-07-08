@@ -79,7 +79,8 @@ class Png extends Image
         $this->width = unpack('Ni', fread($handle, 4))['i'];
         $this->height = unpack('Ni', fread($handle, 4))['i'];
         $this->bits = ord(fread($handle, 1));
-        switch (ord(fread($handle, 1))) {
+        $colorType = ord(fread($handle, 1));
+        switch ($colorType) {
             case 0:
             case 4:
                 $this->colorspace = self::COLORSPACE_GRAY;
@@ -97,8 +98,54 @@ class Png extends Image
             default:
                 throw new CorruptedImageException('Invalid colorspace');
         }
-//        $this->_compression = $this->readInt(1);
-//        $this->_preFilter = $this->readInt(1);
-//        $this->_interlacing = $this->readInt(1);
+
+        $compression = ord(fread($handle, 1));
+        $prefilter = ord(fread($handle, 1));
+        $interlacing = ord(fread($handle, 1));
+
+        // read the random 4 bytes
+        fread($handle, 4);
+
+        $reading = true;
+        while ($reading) {
+            $chunkLength = unpack('Ni', fread($handle, 4))['i'];
+            $chunkType = fread($handle, 4)['i'];
+
+            switch ($chunkType) {
+                case 'PLTE':
+                    $palette = fread($handle, $chunkLength);
+                    fread($handle, 4);
+                    break;
+
+                case 'tRNS':
+                    $transparencyBytes = fread($handle, $chunkLength);
+                    switch ($colorType) {
+                        case 0:
+                            $transparency = [ord(substr($transparencyBytes, 1, 1))];
+                            break;
+
+                        case 2:
+                            $transparency = [
+                                ord(substr($transparencyBytes, 1, 1)),
+                                ord(substr($transparencyBytes, 3, 1)),
+                                ord(substr($transparencyBytes, 5, 1))
+                            ];
+                            break;
+
+                        default:
+                            $transparencyPos = strpos($transparencyBytes, chr(0));
+                            if ($transparencyPos !== false) {
+                                $transparency = [$transparencyPos];
+                            }
+                    }
+                    break;
+
+                case 'IDAT':
+                    break;
+
+                case 'IEND':
+                    break;
+            }
+        }
     }
 }
