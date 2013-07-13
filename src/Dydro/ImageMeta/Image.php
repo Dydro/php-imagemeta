@@ -56,6 +56,13 @@ abstract class Image
     protected $colorspace;
 
     /**
+     * The actual image data
+     *
+     * @var string
+     */
+    protected $data;
+
+    /**
      * The path or URL to the file
      *
      * @var string
@@ -112,6 +119,16 @@ abstract class Image
     public function getColorspace()
     {
         return $this->colorspace;
+    }
+
+    /**
+     * Get the data
+     *
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**

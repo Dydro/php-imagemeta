@@ -22,6 +22,11 @@ use Dydro\ImageMeta\Exception\UnsupportedException;
  */
 class Png extends Image
 {
+    protected $compression;
+    protected $interlacing;
+    protected $palette;
+    protected $preFilter;
+    protected $transparency;
     /**
      * Loads the information from a PNG image
      *
@@ -54,6 +59,7 @@ class Png extends Image
      * Reads through the bytes of a PNG image to verify that it's of proper formatting, and extracting values
      * that GD may have missed or gotten wrong.
      *
+     * @link http://www.w3.org/TR/PNG/
      * @throws Exception\CorruptedImageException
      */
     protected function parse()
@@ -76,6 +82,7 @@ class Png extends Image
 
         // Now we can read the information from the image
         // height and width are 4 bit ints, unpack them
+        // see http://www.w3.org/TR/PNG/#11IHDR for more info
         $this->width = unpack('Ni', fread($handle, 4))['i'];
         $this->height = unpack('Ni', fread($handle, 4))['i'];
         $this->bits = ord(fread($handle, 1));
@@ -99,33 +106,48 @@ class Png extends Image
                 throw new CorruptedImageException('Invalid colorspace');
         }
 
-        $compression = ord(fread($handle, 1));
-        $prefilter = ord(fread($handle, 1));
-        $interlacing = ord(fread($handle, 1));
+        // read the next fixed-width chunks
+        $this->compression = ord(fread($handle, 1));
+        $this->preFilter = ord(fread($handle, 1));
+        $this->interlacing = ord(fread($handle, 1));
 
         // read the random 4 bytes
         fread($handle, 4);
 
+        // read through the rest of the file, cherrypicking based on the type indicator
         $reading = true;
         while ($reading) {
+            // grab the flags (length and type) from the beginning bytes of the chunk
             $chunkLength = unpack('Ni', fread($handle, 4))['i'];
             $chunkType = fread($handle, 4)['i'];
 
             switch ($chunkType) {
+                // read http://www.w3.org/TR/PNG/#11PLTE
                 case 'PLTE':
-                    $palette = fread($handle, $chunkLength);
-                    fread($handle, 4);
+                    $this->palette = fread($handle, $chunkLength);
                     break;
 
+                // read http://www.w3.org/TR/PNG/#11IDAT
+                case 'IDAT':
+                    $this->data = fread($handle, $chunkLength);
+                    break;
+
+                // read http://www.w3.org/TR/PNG/#11IEND
+                case 'IEND':
+                    $reading = false;
+                    break;
+
+                // read http://www.w3.org/TR/PNG/#11tRNS
                 case 'tRNS':
                     $transparencyBytes = fread($handle, $chunkLength);
+                    // grayscale has only 1 transparancy, rgb has more, otherwise if there's stuff, use that
                     switch ($colorType) {
                         case 0:
-                            $transparency = [ord(substr($transparencyBytes, 1, 1))];
+                            $this->transparency = [ord(substr($transparencyBytes, 1, 1))];
                             break;
 
                         case 2:
-                            $transparency = [
+                            $this->transparency = [
                                 ord(substr($transparencyBytes, 1, 1)),
                                 ord(substr($transparencyBytes, 3, 1)),
                                 ord(substr($transparencyBytes, 5, 1))
@@ -135,17 +157,34 @@ class Png extends Image
                         default:
                             $transparencyPos = strpos($transparencyBytes, chr(0));
                             if ($transparencyPos !== false) {
-                                $transparency = [$transparencyPos];
+                                $this->transparency = [$transparencyPos];
                             }
                     }
                     break;
 
-                case 'IDAT':
-                    break;
-
-                case 'IEND':
+                // @TODO - implement these nonsenses
+                case 'cHRM':
+                case 'gAMA':
+                case 'iCCP':
+                case 'sBIT':
+                case 'sRGB':
+                case 'iTXt':
+                case 'tEXt':
+                case 'zTXt':
+                case 'bKGD':
+                case 'hIST':
+                case 'pHYs':
+                case 'sPLT':
+                case 'tIME':
+                default:
+                    fread($handle, $chunkLength);
                     break;
             }
+
+            // read forward to the next flag
+            fread($handle, 4);
         }
+
+
     }
 }
