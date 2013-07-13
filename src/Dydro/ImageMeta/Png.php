@@ -119,7 +119,7 @@ class Png extends Image
         while ($reading) {
             // grab the flags (length and type) from the beginning bytes of the chunk
             $chunkLength = unpack('Ni', fread($handle, 4))['i'];
-            $chunkType = fread($handle, 4)['i'];
+            $chunkType = fread($handle, 4);
 
             switch ($chunkType) {
                 // read http://www.w3.org/TR/PNG/#11PLTE
@@ -163,18 +163,31 @@ class Png extends Image
                     break;
 
                 // @TODO - implement these nonsenses
+                // read http://www.w3.org/TR/PNG/#11cHRM
                 case 'cHRM':
+                // read http://www.w3.org/TR/PNG/#11gAMA
                 case 'gAMA':
+                // read http://www.w3.org/TR/PNG/#11gAMA
                 case 'iCCP':
+                // read http://www.w3.org/TR/PNG/#11sBIT
                 case 'sBIT':
+                // read http://www.w3.org/TR/PNG/#11sRGB
                 case 'sRGB':
+                // read http://www.w3.org/TR/PNG/#11iTXt
                 case 'iTXt':
+                // read http://www.w3.org/TR/PNG/#11tEXt
                 case 'tEXt':
+                // read http://www.w3.org/TR/PNG/#11zTXt
                 case 'zTXt':
+                // read http://www.w3.org/TR/PNG/#11bKGD
                 case 'bKGD':
+                // read http://www.w3.org/TR/PNG/#11hIST
                 case 'hIST':
+                // read http://www.w3.org/TR/PNG/#11pHYs
                 case 'pHYs':
+                // read http://www.w3.org/TR/PNG/#11sPLT
                 case 'sPLT':
+                // read http://www.w3.org/TR/PNG/#11tIME
                 case 'tIME':
                 default:
                     fread($handle, $chunkLength);
@@ -184,7 +197,8 @@ class Png extends Image
             // read forward to the next flag
             fread($handle, 4);
         }
-
-
+        if ($this->colorspace == self::COLORSPACE_PALETTE && !$this->palette) {
+            throw new CorruptedImageException('No palette specified.');
+        }
     }
 }

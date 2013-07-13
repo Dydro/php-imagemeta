@@ -15,6 +15,10 @@ use Dydro\ImageMeta\Png;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
+$png = new Png(__DIR__ . '/../res/block-index.png');
+$png->process();
+die(var_dump($png));
+
 function printDetails(Image $image) {
     $image->process();
     switch ($image->getColorspace()) {
