@@ -42,5 +42,7 @@ class Jpeg extends Image
         if ($this->imageType != IMAGETYPE_JPEG && $this->imageType != IMAGETYPE_JPEG2000) {
             throw new DomainException('Image is not a JPEG');
         }
+
+        $this->data = file_get_contents($this->file);
     }
 }
