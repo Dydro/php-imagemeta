@@ -22,11 +22,14 @@ use Dydro\ImageMeta\Exception\UnsupportedException;
  */
 class Png extends Image
 {
+    protected $alphaOverlayImage;
     protected $compression;
+    protected $iccProfile;
     protected $interlacing;
     protected $palette;
     protected $preFilter;
     protected $transparency;
+
     /**
      * Loads the information from a PNG image
      *
@@ -70,6 +73,7 @@ class Png extends Image
         // The first 8 bits must be the following
         $first8Bits = chr(137) . 'PNG' . chr(13) . chr(10) . chr(26) . chr(10);
         if (fread($handle, 8) != $first8Bits) {
+            fclose($handle);
             throw new CorruptedImageException('Invalid PNG signature');
         }
 
@@ -77,6 +81,7 @@ class Png extends Image
         fseek($handle, 12);
         $ihdrbytes = fread($handle, 4);
         if ($ihdrbytes != 'IHDR') {
+            fclose($handle);
             throw new CorruptedImageException('IHDR not properly read from PNG');
         }
 
@@ -89,20 +94,16 @@ class Png extends Image
         $colorType = ord(fread($handle, 1));
         switch ($colorType) {
             case 0:
-            case 4:
-                $this->colorspace = self::COLORSPACE_GRAY;
-                break;
-
             case 2:
-            case 6:
-                $this->colorspace = self::COLORSPACE_RGB;
-                break;
-
             case 3:
-                $this->colorspace = self::COLORSPACE_PALETTE;
+            case 4:
+            case 6:
+                // constants correspond to the png data
+                $this->colorspace = $colorType;
                 break;
 
             default:
+                fclose($handle);
                 throw new CorruptedImageException('Invalid colorspace');
         }
 
@@ -162,13 +163,30 @@ class Png extends Image
                     }
                     break;
 
-                // @TODO - implement these nonsenses
+                // read http://www.w3.org/TR/PNG/#11iCCP
+                case 'iCCP':
+                    // Read through and skip the profile name (the last byte read is the null separator)
+                    $iccpProfileBytes = 0;
+                    while (fread($handle, 1) != chr(0) && $iccpProfileBytes < 80) {
+                        $iccpProfileBytes++;
+                    }
+
+                    // read through the compression method. if it's not 0, throw an error
+                    if (fread($handle, 1) != chr(0)) {
+                        fclose($handle);
+                        throw new CorruptedImageException('Unrecognized compression method');
+                    }
+
+                    // take the total, subtract the iccp profile, and the null/method bytes
+                    $realChunkLength = $chunkLength - $iccpProfileBytes - 2;
+                    $this->iccProfile = gzuncompress(fread($handle, $realChunkLength));
+                    break;
+
+                // @TODO - implement these
                 // read http://www.w3.org/TR/PNG/#11cHRM
                 case 'cHRM':
                 // read http://www.w3.org/TR/PNG/#11gAMA
                 case 'gAMA':
-                // read http://www.w3.org/TR/PNG/#11gAMA
-                case 'iCCP':
                 // read http://www.w3.org/TR/PNG/#11sBIT
                 case 'sBIT':
                 // read http://www.w3.org/TR/PNG/#11sRGB

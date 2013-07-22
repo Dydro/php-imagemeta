@@ -24,22 +24,32 @@ abstract class Image
     /**
      * The CMYK colorspace
      */
-    const COLORSPACE_CMYK = 4;
+    const COLORSPACE_CMYK = 1;
 
     /**
      * The grayscale colorspace
      */
-    const COLORSPACE_GRAY = 1;
+    const COLORSPACE_GRAY = 0;
+
+    /**
+     * The alpha grayscale colorspace
+     */
+    const COLORSPACE_GRAY_ALPHA = 4;
 
     /**
      * The palette colorspace
      */
-    const COLORSPACE_PALETTE = 0;
+    const COLORSPACE_PALETTE = 3;
 
     /**
      * The RGB colorspace
      */
-    const COLORSPACE_RGB = 3;
+    const COLORSPACE_RGB = 2;
+
+    /**
+     * The RGB colorspace with alpha
+     */
+    const COLORSPACE_RGB_ALPHA = 6;
 
     /**
      * Number of bits for each color
@@ -183,7 +193,19 @@ abstract class Image
             $this->bits = $fileInfo['bits'];
         }
         if (isset($fileInfo['channels'])) {
-            $this->colorspace = $fileInfo['channels'];
+            switch($fileInfo['channels']) {
+                case 1:
+                    $this->colorspace = self::COLORSPACE_GRAY;
+                    break;
+
+                case 3:
+                    $this->colorspace = self::COLORSPACE_RGB;
+                    break;
+
+                case 4:
+                    $this->colorspace = self::COLORSPACE_CMYK;
+                    break;
+            }
         }
         $this->imageType = $fileInfo[2];
     }
