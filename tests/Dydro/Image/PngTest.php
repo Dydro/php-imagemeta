@@ -28,8 +28,8 @@ class PngTest extends \PHPUnit_Framework_TestCase
         $resDir = __DIR__ . '/../../../res/';
 
         $filesAndColors = [
-            'block-rgb' => Png::COLORSPACE_RGB,
-            'block-gray' => Png::COLORSPACE_GRAY,
+            'block-rgb' => Png::COLORSPACE_RGB_ALPHA,
+            'block-gray' => Png::COLORSPACE_GRAY_ALPHA,
             'block-index' => Png::COLORSPACE_PALETTE
         ];
         foreach ($filesAndColors as $file => $colorspace) {
