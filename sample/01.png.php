@@ -21,17 +21,18 @@ function printDetails(Image $image) {
     $constants = $reflection->getConstants();
     $colorspaceConst = str_replace('COLORSPACE_', '', array_search($image->getColorspace(), $constants));
 
+    echo '|' . str_pad(basename(str_replace('\\', '/', get_class($image))), 6, ' ', STR_PAD_BOTH);
     echo '|' . str_pad($image->getBits(), 6, ' ', STR_PAD_BOTH);
     echo '|' . str_pad($image->getColorspace() . ' (' . $colorspaceConst . ')', 16, ' ', STR_PAD_BOTH);
     echo '|' . str_pad($image->getHeight(), 8, ' ', STR_PAD_BOTH);
     echo '|' . str_pad($image->getWidth(), 7, ' ', STR_PAD_BOTH);
     echo '|' . PHP_EOL;
-    echo '+------+----------------+--------+-------+' . PHP_EOL;
+    echo '+------+------+----------------+--------+-------+' . PHP_EOL;
 }
 
-echo '+------+----------------+--------+-------+' . PHP_EOL;
-echo '| BITS |  COLORSPACE_*  | HEIGHT | WIDTH |' . PHP_EOL;
-echo '+------+----------------+--------+-------+' . PHP_EOL;
+echo '+------+------+----------------+--------+-------+' . PHP_EOL;
+echo '| TYPE | BITS |  COLORSPACE_*  | HEIGHT | WIDTH |' . PHP_EOL;
+echo '+------+------+----------------+--------+-------+' . PHP_EOL;
 printDetails(new Jpeg(__DIR__ . '/../res/block-gray.jpg'));
 printDetails(new Jpeg(__DIR__ . '/../res/block-rgb.jpg'));
 printDetails(new Jpeg(__DIR__ . '/../res/block-cmyk.jpg'));
